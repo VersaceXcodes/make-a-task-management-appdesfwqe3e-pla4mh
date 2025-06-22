@@ -17,9 +17,10 @@ const fetch_projects_api = async (): Promise<ProjectListResponse[]> => {
   }
 
   try {
+    const VITE_API_BASE_URL: string = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
     const response = await axios.get<ProjectListResponse[]>(
       // Construct the API URL using the Vite environment variable
-      `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'}/api/v1/projects`,
+      `${VITE_API_BASE_URL}/api/v1/projects`,
       {
         headers: {
           Authorization: `Bearer ${auth_token}`, // Attach the JWT token for authentication

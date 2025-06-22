@@ -16,7 +16,7 @@ interface ResetPasswordResponse {
 }
 
 // --- Constants ---
-const VITE_API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
+const VITE_API_BASE_URL: string = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
 
 // --- Password Validation Utility ---
 const validatePassword = (password: string): string | null => { // Renamed from validate_password

@@ -4,8 +4,8 @@ import axios, { AxiosInstance } from 'axios';
 import { io, Socket } from 'socket.io-client';
 
 // --- Environment Variables ---
-const VITE_API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
-const VITE_WS_BASE_URL = (import.meta.env.VITE_WS_BASE_URL as string) || 'http://localhost:3000'; // Assuming WS runs on same port as HTTP server based on BRD
+const VITE_API_BASE_URL: string = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
+const VITE_WS_BASE_URL: string = (import.meta.env.VITE_WS_BASE_URL as string) || 'http://localhost:3000'; // Assuming WS runs on same port as HTTP server based on BRD
 
 // --- Global Axios Instance ---
 let api_client: AxiosInstance;

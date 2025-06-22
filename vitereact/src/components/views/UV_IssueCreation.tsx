@@ -138,7 +138,7 @@ interface IssueDetailedResponse {
 }
 
 // Helper to access environment variable for API base URL
-const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const VITE_API_BASE_URL: string = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
 
 const UV_IssueCreation: React.FC = () => {
   const { project_key: initial_project_key_slug } = useParams<{ project_key?: string }>();

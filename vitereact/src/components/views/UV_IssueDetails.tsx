@@ -147,8 +147,8 @@ interface SubTaskCreateRequest {
 }
 
 // --- Environment Variables ---
-const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
-const VITE_WS_BASE_URL = import.meta.env.VITE_WS_BASE_URL || 'http://localhost:3000';
+const VITE_API_BASE_URL: string = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
+const VITE_WS_BASE_URL: string = (import.meta.env.VITE_WS_BASE_URL as string) || 'http://localhost:3000';
 
 // --- Axios Instance ---
 const api = axios.create({
@@ -447,7 +447,12 @@ const UV_IssueDetails: React.FC = () => {
 
   // Delete Comment
   const deleteCommentMutation = useMutation<any, Error, string>({
-    mutationFn: async (commentId) => api.delete(`/api/v1/comments/${commentId}`),
+    mutationFn: async (commentId) => {
+      set_global_loading(true);
+      const { data } = await api.delete(`/api/v1/comments/${commentId}`);
+      set_global_loading(false);
+      return data;
+    },
     onSuccess: () => {
       add_snackbar_message('success', 'Comment deleted!');
       // Real-time update via socket will update the activity log

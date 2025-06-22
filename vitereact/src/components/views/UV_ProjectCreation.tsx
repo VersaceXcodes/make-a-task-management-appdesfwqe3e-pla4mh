@@ -31,7 +31,7 @@ interface ProjectCreationResponse {
 
 // --- API Calls ---
 
-const VITE_API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
+const VITE_API_BASE_URL: string = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
 
 const fetchAllUsers = async (): Promise<UserSummary[]> => {
   const { data } = await axios.get<UserSummary[]>(`${VITE_API_BASE_URL}/api/v1/users`);
