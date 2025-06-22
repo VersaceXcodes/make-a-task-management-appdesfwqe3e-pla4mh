@@ -1,0 +1,555 @@
+asyncapi: 2.6.0
+info:
+  title: AetherFlow Realtime API
+  version: 1.0.0
+  description: API for real-time events in the AetherFlow task management system,
+    enabling instant updates for collaborative features, Kanban board
+    synchronization, and in-app notifications.
+servers:
+  production:
+    url: "{host}"
+    protocol: ws
+    description: Production WebSocket server for real-time events.
+    variables:
+      host:
+        default: localhost:3000
+        description: The host address of the AetherFlow WebSocket server.
+    security:
+      - bearer_auth: []
+channels:
+  users/{user_id}/notifications:
+    parameters:
+      user_id:
+        description: Unique identifier of the user (UUID).
+        schema:
+          type: string
+          format: uuid
+    publish:
+      summary: Delivers real-time notifications to a specific user.
+      operationId: receive_notification
+      message:
+        $ref: "#/components/messages/notification_new_unread_message"
+  projects/{project_id}/board:
+    parameters:
+      project_id:
+        description: Unique identifier of the project (UUID).
+        schema:
+          type: string
+          format: uuid
+    publish:
+      summary: Broadcasts real-time updates for Kanban board issues within a project.
+      operationId: board_issue_updated
+      message:
+        $ref: "#/components/messages/issue_status_updated_message"
+  issues/{issue_id}/activity:
+    parameters:
+      issue_id:
+        description: Unique identifier of the issue (UUID).
+        schema:
+          type: string
+          format: uuid
+    publish:
+      summary: Delivers real-time updates for an issue's comments and general details.
+      operationId: issue_activity_updated
+      message:
+        oneOf:
+          - $ref: "#/components/messages/issue_comment_added_message"
+          - $ref: "#/components/messages/issue_details_updated_message"
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  messages:
+    notification_new_unread_message:
+      name: notification_new_unread
+      title: New Unread Notification Event
+      summary: Event sent to a user when a new unread notification is created for them.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - notification_new_unread
+            description: Discriminator for the event type.
+          data:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Unique identifier of the notification.
+                format: uuid
+              issue_id:
+                type: string
+                description: Unique identifier of the issue related to the notification.
+                format: uuid
+              issue_key:
+                type: string
+                description: Human-readable unique key of the related issue (e.g., WEB-123).
+              issue_summary:
+                type: string
+                description: Summary of the related issue.
+              project_key:
+                type: string
+                description: Unique key of the project the issue belongs to.
+              notification_type:
+                type: string
+                description: Specific type of notification trigger.
+                enum:
+                  - assigned_to_you
+                  - new_comment
+                  - status_change
+                  - mentioned
+              actor:
+                $ref: "#/components/schemas/user_details_schema"
+                nullable: true
+                description: The user who performed the action triggering the notification (if
+                  applicable).
+              comment:
+                $ref: "#/components/schemas/comment_summary_schema"
+                nullable: true
+                description: Summary of the comment if the notification is comment-related.
+              summary_text:
+                type: string
+                description: Concise text summary for display in the notification feed.
+              is_read:
+                type: boolean
+                description: Indicates if the notification has been read.
+              created_at:
+                type: string
+                format: date-time
+                description: Timestamp when the notification was generated.
+            required:
+              - id
+              - issue_id
+              - issue_key
+              - issue_summary
+              - project_key
+              - notification_type
+              - summary_text
+              - is_read
+              - created_at
+        required:
+          - type
+          - data
+    issue_status_updated_message:
+      name: issue_status_updated
+      title: Issue Status Updated Event
+      summary: Event broadcast when an issue's status changes (e.g., via Kanban
+        drag-and-drop).
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - issue_status_updated
+            description: Discriminator for the event type.
+          data:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Unique identifier of the updated issue.
+                format: uuid
+              project_id:
+                type: string
+                description: Unique identifier of the project the issue belongs to.
+                format: uuid
+              status:
+                type: string
+                description: The new status of the issue.
+                enum:
+                  - To Do
+                  - In Progress
+                  - Done
+              old_status:
+                type: string
+                description: The previous status of the issue.
+                enum:
+                  - To Do
+                  - In Progress
+                  - Done
+              updated_by:
+                $ref: "#/components/schemas/user_details_schema"
+                description: The user who updated the issue status.
+              updated_at:
+                type: string
+                format: date-time
+                description: Timestamp of the status update.
+              issue_summary:
+                $ref: "#/components/schemas/issue_summary_schema"
+                description: Summary details of the issue for Kanban card updates.
+            required:
+              - id
+              - project_id
+              - status
+              - old_status
+              - updated_by
+              - updated_at
+              - issue_summary
+        required:
+          - type
+          - data
+    issue_comment_added_message:
+      name: issue_comment_added
+      title: Issue Comment Added Event
+      summary: Event broadcast when a new comment is added to an issue.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - issue_comment_added
+            description: Discriminator for the event type.
+          data:
+            type: object
+            properties:
+              issue_id:
+                type: string
+                description: Unique identifier of the issue the comment belongs to.
+                format: uuid
+              comment:
+                $ref: "#/components/schemas/comment_summary_schema"
+                description: Details of the newly added comment.
+            required:
+              - issue_id
+              - comment
+        required:
+          - type
+          - data
+    issue_details_updated_message:
+      name: issue_details_updated
+      title: Issue Details Updated Event
+      summary: General event broadcast when an issue's core fields (excluding status)
+        are updated.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - issue_details_updated
+            description: Discriminator for the event type.
+          data:
+            type: object
+            properties:
+              issue_id:
+                type: string
+                description: Unique identifier of the updated issue.
+                format: uuid
+              updated_fields:
+                type: object
+                description: Object containing the fields that were updated and their new
+                  values.
+                properties:
+                  summary:
+                    type: string
+                    description: New summary of the issue.
+                  description:
+                    type: string
+                    description: New description of the issue (Markdown content).
+                  assignee_user_id:
+                    type: string
+                    description: Unique identifier of the new assignee user (UUID).
+                    format: uuid
+                    nullable: true
+                  priority:
+                    type: string
+                    description: New priority level of the issue.
+                    enum:
+                      - Highest
+                      - High
+                      - Medium
+                      - Low
+                      - Lowest
+                  due_date:
+                    type: string
+                    format: date-time
+                    description: New due date of the issue.
+                    nullable: true
+                  labels:
+                    type: array
+                    description: List of new labels associated with the issue.
+                    items:
+                      $ref: "#/components/schemas/label_schema"
+                  attachments:
+                    type: array
+                    description: List of current attachments associated with the issue.
+                    items:
+                      $ref: "#/components/schemas/attachment_schema"
+                  linked_issues:
+                    type: array
+                    description: List of current linked issues.
+                    items:
+                      $ref: "#/components/schemas/linked_issue_schema"
+                  sub_tasks:
+                    type: array
+                    description: List of current sub-tasks.
+                    items:
+                      $ref: "#/components/schemas/sub_task_schema"
+                  rank:
+                    type: integer
+                    description: New rank for prioritization in the issues list.
+                minProperties: 1
+              activity_log_entry:
+                $ref: "#/components/schemas/activity_log_entry_schema"
+                description: The new entry in the issue's activity log corresponding to this
+                  update.
+              updated_by:
+                $ref: "#/components/schemas/user_details_schema"
+                description: The user who performed the update.
+              updated_at:
+                type: string
+                format: date-time
+                description: Timestamp of the details update.
+            required:
+              - issue_id
+              - activity_log_entry
+              - updated_by
+              - updated_at
+        required:
+          - type
+          - data
+  schemas:
+    user_details_schema:
+      type: object
+      description: Basic user details.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the user (UUID).
+          format: uuid
+        first_name:
+          type: string
+          description: User's first name.
+        last_name:
+          type: string
+          description: User's last name.
+        profile_picture_url:
+          type: string
+          description: URL to the user's profile picture.
+          nullable: true
+      required:
+        - id
+        - first_name
+        - last_name
+    issue_summary_schema:
+      type: object
+      description: Summary details for an issue, typically used for Kanban cards or
+        brief listings.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the issue (UUID).
+          format: uuid
+        issue_key:
+          type: string
+          description: Human-readable unique key of the issue (e.g., WEB-123).
+        summary:
+          type: string
+          description: Concise title of the issue.
+        assignee:
+          $ref: "#/components/schemas/user_details_schema"
+          nullable: true
+          description: The user currently assigned to the issue.
+        priority:
+          type: string
+          description: Priority level of the issue.
+          enum:
+            - Highest
+            - High
+            - Medium
+            - Low
+            - Lowest
+      required:
+        - id
+        - issue_key
+        - summary
+        - priority
+    comment_summary_schema:
+      type: object
+      description: Summary details for a comment on an issue.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the comment (UUID).
+          format: uuid
+        user:
+          $ref: "#/components/schemas/user_details_schema"
+          description: The user who authored the comment.
+        comment_content:
+          type: string
+          description: The content of the comment (Markdown).
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the comment was created.
+      required:
+        - id
+        - user
+        - comment_content
+        - created_at
+    label_schema:
+      type: object
+      description: Details for an issue label.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the label (UUID).
+          format: uuid
+        label_name:
+          type: string
+          description: The name of the label (e.g., "frontend", "urgent").
+      required:
+        - id
+        - label_name
+    attachment_schema:
+      type: object
+      description: Metadata for a file attached to an issue.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the attachment (UUID).
+          format: uuid
+        file_name:
+          type: string
+          description: Original name of the attached file.
+        file_url:
+          type: string
+          description: URL where the file is stored.
+          format: uri
+        mime_type:
+          type: string
+          description: MIME type of the file.
+        file_size:
+          type: integer
+          description: Size of the file in bytes.
+          format: int64
+        uploaded_by:
+          $ref: "#/components/schemas/user_details_schema"
+          description: The user who uploaded the attachment.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the attachment was uploaded.
+      required:
+        - id
+        - file_name
+        - file_url
+        - mime_type
+        - file_size
+        - uploaded_by
+        - created_at
+    linked_issue_schema:
+      type: object
+      description: Summary details for an issue linked to another.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the linked issue (UUID).
+          format: uuid
+        summary:
+          type: string
+          description: Summary of the linked issue.
+        project_key:
+          type: string
+          description: Project key of the linked issue (e.g., "WEB").
+        link_type:
+          type: string
+          description: Type of relationship between the issues.
+          enum:
+            - relates_to
+      required:
+        - id
+        - summary
+        - project_key
+        - link_type
+    sub_task_schema:
+      type: object
+      description: Summary details for a sub-task.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the sub-task (UUID).
+          format: uuid
+        summary:
+          type: string
+          description: Summary of the sub-task.
+        assignee:
+          $ref: "#/components/schemas/user_details_schema"
+          nullable: true
+          description: The user assigned to the sub-task.
+        status:
+          type: string
+          description: Current status of the sub-task.
+          enum:
+            - To Do
+            - In Progress
+            - Done
+      required:
+        - id
+        - summary
+        - status
+    activity_log_entry_schema:
+      type: object
+      description: An entry in an issue's activity log, detailing a specific change or
+        event.
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the activity log entry (UUID).
+          format: uuid
+        user:
+          $ref: "#/components/schemas/user_details_schema"
+          description: The user who performed the action.
+        action_type:
+          type: string
+          description: Type of action performed.
+          enum:
+            - issue_created
+            - status_changed
+            - comment_added
+            - assignee_changed
+            - description_updated
+            - label_added
+            - label_removed
+            - attachment_added
+            - attachment_removed
+            - issue_linked
+            - issue_link_removed
+            - comment_edited
+            - comment_deleted
+        field_name:
+          type: string
+          description: Name of the field changed, if applicable (e.g., "status",
+            "assignee", "description").
+          nullable: true
+        old_value:
+          type: string
+          description: Previous value of the field (serialized string or JSON).
+          nullable: true
+        new_value:
+          type: string
+          description: New value of the field (serialized string or JSON).
+          nullable: true
+        comment:
+          $ref: "#/components/schemas/comment_summary_schema"
+          description: Details of the comment if the action is comment-related.
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the action occurred.
+      required:
+        - id
+        - user
+        - action_type
+        - created_at

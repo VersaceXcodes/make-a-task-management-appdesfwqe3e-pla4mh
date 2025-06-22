@@ -1,0 +1,19 @@
+{
+  "timestamp": 1750602689655,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "GV_ProjectSubNavigation",
+      "version": "latest"
+    }
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/src/components/views/GV_ProjectSubNavigation.tsx",
+      "type": "text",
+      "size": 3318,
+      "dependencies": false
+    }
+  ]
+}

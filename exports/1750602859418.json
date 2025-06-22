@@ -1,0 +1,19 @@
+{
+  "timestamp": 1750602859418,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_MyWorkDashboard",
+      "version": "1750602309363"
+    }
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/src/components/views/UV_MyWorkDashboard.tsx",
+      "type": "text",
+      "size": 16014,
+      "dependencies": false
+    }
+  ]
+}

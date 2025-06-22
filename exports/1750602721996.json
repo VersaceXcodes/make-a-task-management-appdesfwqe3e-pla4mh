@@ -1,0 +1,19 @@
+{
+  "timestamp": 1750602721996,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "GV_LeftSidebar",
+      "version": "1750602060001"
+    }
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/src/components/views/GV_LeftSidebar.tsx",
+      "type": "text",
+      "size": 8605,
+      "dependencies": false
+    }
+  ]
+}

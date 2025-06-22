@@ -1,0 +1,19 @@
+{
+  "timestamp": 1750604238743,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_IssueCreation",
+      "version": "latest"
+    }
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/src/components/views/UV_IssueCreation.tsx",
+      "type": "text",
+      "size": 34113,
+      "dependencies": false
+    }
+  ]
+}

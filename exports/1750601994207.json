@@ -1,0 +1,15 @@
+{
+  "timestamp": 1750601994207,
+  "operation": {
+    "id": "settings:config:package"
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/package.json",
+      "type": "text",
+      "size": 2910,
+      "dependencies": true
+    }
+  ]
+}

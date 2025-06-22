@@ -1,0 +1,19 @@
+{
+  "timestamp": 1750604664424,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "GV_GlobalConfirmationModal",
+      "version": "1750604663718"
+    }
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/src/components/views/GV_GlobalConfirmationModal.tsx",
+      "type": "text",
+      "size": 8084,
+      "dependencies": false
+    }
+  ]
+}

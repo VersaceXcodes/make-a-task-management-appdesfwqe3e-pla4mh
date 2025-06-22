@@ -1,0 +1,19 @@
+{
+  "timestamp": 1750604118147,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_ProjectSettingsMembers",
+      "version": "1750604117807"
+    }
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/src/components/views/UV_ProjectSettingsMembers.tsx",
+      "type": "text",
+      "size": 26757,
+      "dependencies": false
+    }
+  ]
+}

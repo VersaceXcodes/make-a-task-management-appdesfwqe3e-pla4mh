@@ -1,0 +1,19 @@
+{
+  "timestamp": 1750603680356,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_EmailVerificationSuccess",
+      "version": "1750603680111"
+    }
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/src/components/views/UV_EmailVerificationSuccess.tsx",
+      "type": "text",
+      "size": 1637,
+      "dependencies": false
+    }
+  ]
+}

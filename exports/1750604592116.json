@@ -1,0 +1,19 @@
+{
+  "timestamp": 1750604592116,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "GV_GlobalSnackBarNotifications",
+      "version": "latest"
+    }
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/src/components/views/GV_GlobalSnackBarNotifications.tsx",
+      "type": "text",
+      "size": 5076,
+      "dependencies": false
+    }
+  ]
+}

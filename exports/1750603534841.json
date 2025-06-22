@@ -1,0 +1,19 @@
+{
+  "timestamp": 1750603534841,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_Login",
+      "version": "1750603534434"
+    }
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/src/components/views/UV_Login.tsx",
+      "type": "text",
+      "size": 1878,
+      "dependencies": false
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "timestamp": 1750602876183,
+  "operation": {
+    "id": "webapp:react:views",
+    "refs": {
+      "id": "UV_GlobalSearchResults",
+      "version": "latest"
+    }
+  },
+  "projectId": "make-a-task-management-appdesfwqe3e",
+  "files": [
+    {
+      "path": "../../apps/make-a-task-management-appdesfwqe3e/vitereact/src/components/views/UV_GlobalSearchResults.tsx",
+      "type": "text",
+      "size": 8208,
+      "dependencies": false
+    }
+  ]
+}
