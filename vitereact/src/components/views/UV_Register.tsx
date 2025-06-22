@@ -62,7 +62,7 @@ const UV_Register: React.FC = () => {
   }, [is_form_filled, is_email_valid, is_password_long_enough, are_passwords_matching]);
 
   // --- API Call Integration with React Query ---
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+  const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
 
   const register_user = async (user_data: UserRegisterRequest): Promise<RegisterResponse> => {
     const { data } = await axios.post<RegisterResponse>(`${API_BASE_URL}/api/v1/auth/register`, user_data);

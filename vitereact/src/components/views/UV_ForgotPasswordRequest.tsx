@@ -6,7 +6,7 @@ import { z } from 'zod'; // For robust email validation
 import { useAppStore } from '@/store/main'; // For global snackbar notifications
 
 // Define base URL from environment variables
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'http://localhost:3000';
 
 // ------------------------------------
 // Type Definitions for API Interaction
